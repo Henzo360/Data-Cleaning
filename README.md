@@ -1,71 +1,73 @@
 # FIFA Player Dataset: Data Cleaning and Preparation
 
 ## Project overview
-This project uses Python and pandas to clean and standardise a FIFA player dataset. The notebook examines the structure and quality of the data, handles inconsistent formats and missing values, converts fields into more useful data types, and checks the prepared dataset.
 
-Data cleaning is an important step before analysis or modelling because inconsistent units, mixed numeric formats, duplicate records, and poorly handled missing values can lead to misleading results.
+This project uses Python and pandas to clean and standardise selected fields in the FIFA 21 player dataset. The workflow focuses on data profiling, duplicate checks, missing-value assessment, unit conversion, currency parsing, contract-field parsing, date conversion, and exporting a cleaned dataset.
 
-## Tools and libraries
-- **Python** — data preparation
-- **pandas** — tabular data manipulation and type conversion
-- **NumPy** — numerical operations
-- **Matplotlib** — visualisation
-- **missingno** — visual exploration of missing-value patterns
+## Objectives
 
-## Data-quality issues addressed
-The notebook works with several types of inconsistencies:
-- Club names containing newline characters.
-- Height values recorded in different formats, including centimetres and feet/inches.
-- Weight values recorded in kilograms and pounds.
-- Financial fields such as `Value`, `Wage`, and `Release Clause` containing currency symbols and suffixes such as K and M.
-- Rating fields such as `W/F`, `SM`, and `IR` containing characters that need to be handled before analysis.
-- The `Hits` field containing mixed formats, including values with a K suffix.
-- Date information in the `Joined` field requiring datetime conversion.
-- Missing values and possible duplicate records.
+- Inspect the dataset structure, data types, missing values, and duplicate rows.
+- Remove non-analytical profile fields where appropriate.
+- Standardise player height to centimetres and weight to kilograms.
+- Convert player value, wage, and release clause fields to numeric euro amounts.
+- Parse contract details, ratings, website hits, and joining dates.
+- Validate the cleaned dataset and export it for later analysis.
 
-## Cleaning workflow
-### 1. Inspect the source data
-The notebook loads the dataset and inspects its dimensions, columns, data types, and missing-value patterns to understand the initial state of the data.
+## Tools
 
-### 2. Review missing values and columns
-Missing values are examined by column. The notebook removes columns considered unsuitable for the intended analysis and handles missing values in selected fields.
+- Python
+- pandas
+- NumPy
+- Jupyter Notebook
 
-### 3. Standardise physical measurements
-Height values are converted to a consistent centimetre representation, and weight values are converted to kilograms so records use comparable units.
-
-### 4. Convert financial values
-Currency-formatted values in `Value`, `Wage`, and `Release Clause` are cleaned by removing formatting characters and interpreting K/M suffixes as numeric multipliers.
-
-### 5. Clean ratings and counts
-The notebook removes or transforms non-numeric characters in rating fields and standardises the `Hits` field so the values can be represented numerically.
-
-### 6. Standardise text and dates
-Newline characters are removed from club names, contract information is split into separate fields, and the `Joined` field is converted to a datetime representation.
-
-### 7. Validate the cleaned data
-The notebook checks missing values and duplicate records after the cleaning operations. It reports that no missing values remain in the resulting dataset; this result depends on the source data and the cleaning decisions used in the notebook.
-
-## Notable handling decisions
-- Missing values in `Hits` are set to zero in the notebook. This assumes that a missing value can be interpreted as zero; the dataset's meaning and collection process should be considered before making that assumption.
-- `Loan Date End` is dropped after the notebook notes that more than 94% of its values are missing. This is a specific decision made for this analysis.
-- The notebook's final validation checks should be rerun whenever the source dataset or cleaning logic changes.
+See `requirements.txt` for the dependencies.
 
 ## Repository contents
-- `Fifa Data Cleaning.ipynb` — Jupyter notebook containing the cleaning workflow and checks.
-- `.gitignore` — Git ignore configuration.
 
-## Running the project
-1. Clone or download the repository.
+- `Fifa Data Cleaning.ipynb` — the end-to-end cleaning workflow.
+- `requirements.txt` — Python package dependencies.
+- `data/` — expected location for the source CSV; the raw dataset is not committed to this repository.
+- `output/` — created by the notebook when the cleaned CSV is exported.
+
+## Data preparation workflow
+
+1. Load the source CSV and inspect its shape, columns, data types, missing values, and duplicates.
+2. Drop selected profile URL columns and remove exact duplicate rows if any are present.
+3. Measure missingness in `Loan Date End`; drop that column from the cleaned dataset because it is highly incomplete in the source data.
+4. Trim club-name whitespace and split the original `Contract` field into `Contract_type` and `Contract_end`.
+5. Convert height and weight to centimetres and kilograms.
+6. Parse `Value`, `Wage`, and `Release Clause` into numeric euro amounts.
+7. Convert `W/F`, `SM`, and `IR` to nullable numeric ratings; parse `Joined` as a datetime; and convert selected descriptive fields to categorical data.
+8. Review remaining missing values and duplicates, then export the cleaned CSV.
+
+## Important data-quality decisions
+
+- **Missing Hits are not set to zero.** A missing value does not prove that a player's page received zero visits, so unknown values remain missing.
+- **Missing values are reported, not automatically erased.** Some fields can legitimately be missing; assess them in context before analysis.
+- **Contract end values preserve their source representation.** Standard contracts usually contain a year, while loan records can contain a full date.
+- **Unparseable measurements or monetary values become missing.** This avoids silently introducing incorrect numeric values.
+
+## How to run
+
+1. Clone or download this repository.
 2. Install the dependencies:
 
    ```bash
-   pip install pandas numpy matplotlib missingno jupyter
+   python -m pip install -r requirements.txt
    ```
 
-3. Place the source FIFA dataset at the path used by the notebook, or edit the data-loading cell to match your local file location.
-4. Open the notebook in Jupyter and run the cells in order.
+3. Create a folder named `data` beside the notebook.
+4. Place the source CSV in that folder and name it `fifa21_raw_data_v2.csv`.
+5. Open `Fifa Data Cleaning.ipynb` in Jupyter and run the cells from top to bottom.
 
-The source dataset is not currently included in this repository, so it must be supplied locally to reproduce the workflow.
+The expected input path is `data/fifa21_raw_data_v2.csv`. The cleaned file is written to `output/fifa_cleaned.csv`.
+
+## Limitations
+
+- The source dataset is not included in this repository, so users must obtain it separately and ensure they have the right to use it.
+- The notebook reports missing values after cleaning rather than claiming that all missing values have been eliminated.
+- The transformations standardise fields for analysis; they do not independently validate the real-world accuracy of FIFA player attributes.
 
 ## Author
+
 Henry Odionye
