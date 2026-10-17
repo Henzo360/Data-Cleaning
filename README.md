@@ -26,7 +26,7 @@ See `requirements.txt` for the dependencies.
 
 - `Fifa Data Cleaning.ipynb` — the end-to-end cleaning workflow.
 - `requirements.txt` — Python package dependencies.
-- `data/` — expected location for the source CSV; the raw dataset is not committed to this repository.
+- `fifa21 raw data v2.csv` — source dataset included at the repository root; the notebook also supports the conventional `data/fifa21_raw_data_v2.csv` path.
 - `output/` — created by the notebook when the cleaned CSV is exported.
 
 ## Data preparation workflow
