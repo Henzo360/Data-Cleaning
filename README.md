@@ -28,7 +28,7 @@ See `requirements.txt` for the dependencies.
 - `requirements.txt` — Python package dependencies.
 - `fifa21 raw data v2.csv` — source dataset included at the repository root; the notebook also supports the conventional `data/fifa21_raw_data_v2.csv` path.
 - `output/` — created by the notebook when the cleaned CSV is exported.
-- fifa_cleaned.csv - the cleaned file for preview sake
+- 'fifa_cleaned.csv' - the cleaned file for preview sake
 
 ## Data preparation workflow
 
