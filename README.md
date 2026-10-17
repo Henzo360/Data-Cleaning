@@ -57,15 +57,11 @@ See `requirements.txt` for the dependencies.
    python -m pip install -r requirements.txt
    ```
 
-3. Create a folder named `data` beside the notebook.
-4. Place the source CSV in that folder and name it `fifa21_raw_data_v2.csv`.
-5. Open `Fifa Data Cleaning.ipynb` in Jupyter and run the cells from top to bottom.
+3. Open `Fifa Data Cleaning.ipynb` in Jupyter and run the cells from top to bottom.
 
 The expected input path is `data/fifa21_raw_data_v2.csv`. The cleaned file is written to `output/fifa_cleaned.csv`.
 
 ## Limitations
-
-- The source dataset is not included in this repository, so users must obtain it separately and ensure they have the right to use it.
 - The notebook reports missing values after cleaning rather than claiming that all missing values have been eliminated.
 - The transformations standardise fields for analysis; they do not independently validate the real-world accuracy of FIFA player attributes.
 
